@@ -1,0 +1,33 @@
+---
+id: prometheus
+title: Prometheus Metrics
+sidebar_label: Prometheus
+---
+
+# Prometheus Metrics
+
+The `/metrics` endpoint exposes standard Prometheus-format metrics for scraping. No authentication is required for this endpoint to support Prometheus server ingestion.
+
+<EndpointCard method="GET" path="/metrics" description="Prometheus metrics — no auth required." />
+
+```text title="sample output"
+# HELP http_requests_total Total HTTP requests
+# TYPE http_requests_total counter
+http_requests_total{method="GET",endpoint="/api/v1/top-speed-plot",status="200"} 1234
+
+# HELP http_request_duration_seconds HTTP request latency
+# TYPE http_request_duration_seconds histogram
+http_request_duration_seconds_bucket{endpoint="/api/v1/top-speed-plot",le="0.1"} 156
+http_request_duration_seconds_bucket{endpoint="/api/v1/top-speed-plot",le="0.5"} 842
+http_request_duration_seconds_bucket{endpoint="/api/v1/top-speed-plot",le="+Inf"} 1234
+```
+
+Add a Prometheus scrape config to ingest:
+
+```yaml title="prometheus.yml"
+scrape_configs:
+  - job_name: t1api
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['api.t1f1.com']
+```

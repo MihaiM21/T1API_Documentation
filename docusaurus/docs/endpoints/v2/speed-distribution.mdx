@@ -1,0 +1,22 @@
+---
+id: speed-distribution
+title: V2 — Speed Distribution
+sidebar_label: Speed Distribution
+---
+
+# Speed Distribution
+
+Speed distribution across the full session sourced from the V2 direct client.
+
+<EndpointCard method="GET" path="/api/v2/speed-distribution-plot" description="PNG speed distribution from V2 telemetry." />
+<EndpointCard method="GET" path="/api/v2/speed-distribution-data" description="JSON speed distribution from V2 telemetry." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer | string', required: true, description: 'Round number, event key, or official name' },
+    { name: 'session', type: 'string', required: true, description: 'Session type' },
+  ]}
+/>

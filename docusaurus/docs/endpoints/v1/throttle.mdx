@@ -1,0 +1,27 @@
+---
+id: throttle
+title: V1 — Throttle Comparison
+sidebar_label: Throttle Comparison
+---
+
+# Throttle Comparison
+
+Throttle application patterns for all drivers across the session.
+
+<EndpointCard method="GET" path="/api/v1/throttle-comparison-plot" description="PNG showing throttle application per driver." />
+<EndpointCard method="GET" path="/api/v1/throttle-comparison-data" description="JSON throttle data per driver." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer', required: true, description: 'Grand Prix round number (1–24)' },
+    { name: 'session', type: 'string', required: true, description: 'Session type: Q, R, FP1, FP2, FP3, S, SQ' },
+  ]}
+/>
+
+```bash
+curl "https://api.t1f1.com/api/v1/throttle-comparison-data?year=2025&gp=1&session=Q" \
+  -H "X-API-Key: YOUR_KEY"
+```

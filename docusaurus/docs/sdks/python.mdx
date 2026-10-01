@@ -1,0 +1,62 @@
+---
+id: python
+title: Python SDK
+sidebar_label: Python
+---
+
+# Python
+
+The `t1api-python` library supports Python 3.9+ with both synchronous and async interfaces.
+
+## Installation
+
+```bash
+pip install t1api
+# or with uv
+uv add t1api
+```
+
+## Usage
+
+```python title="example.py"
+from t1api import T1Client
+
+client = T1Client(api_key="YOUR_API_KEY")
+
+# Get current session
+session = client.sessions.current()
+print(session.session_name)  # Race
+
+# Get live timing
+timing = client.sessions.timing(session.session_key)
+for driver in timing:
+    print(f"{driver.position}. {driver.broadcast_name} — {driver.last_lap_time}")
+
+# Get standings
+standings = client.standings.drivers(year=2025)
+for entry in standings:
+    print(f"{entry.position}. {entry.full_name} — {entry.points} pts")
+```
+
+## Async & WebSocket
+
+```python title="realtime.py"
+import asyncio
+from t1api import AsyncT1Client
+
+async def main():
+    client = AsyncT1Client(api_key="YOUR_API_KEY")
+    session = await client.sessions.current()
+
+    async with client.ws.connect() as ws:
+        await ws.subscribe("timing", session_key="current")
+        await ws.subscribe("car_data", session_key="current")
+
+        async for event in ws:
+            if event.type == "timing.update":
+                print(f"P{event.data.position} {event.data.broadcast_name}")
+            elif event.type == "car_data.update":
+                print(f"{event.data.driver_number}: {event.data.speed} km/h")
+
+asyncio.run(main())
+```

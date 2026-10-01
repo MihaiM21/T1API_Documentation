@@ -1,0 +1,42 @@
+---
+id: seasonal
+title: V2 — Seasonal Events
+sidebar_label: Seasonal Events
+---
+
+# Seasonal Events
+
+Race calendar and session schedule data pulled directly from the F1 API via the V2 client. Supports event-name matching with case-insensitive partial string search.
+
+<EndpointCard method="GET" path="/api/v2/seasons/{year}/events" description="All events in the specified season." />
+<EndpointCard method="GET" path="/api/v2/seasons/{year}/events/{event_name}/sessions" description="All sessions for a specific event (e.g. Bahrain)." />
+
+```bash
+# List all 2025 events
+curl "https://api.t1f1.com/api/v2/seasons/2025/events" -H "X-API-Key: YOUR_KEY"
+
+# Get sessions for Bahrain (partial match)
+curl "https://api.t1f1.com/api/v2/seasons/2025/events/Bahrain/sessions" -H "X-API-Key: YOUR_KEY"
+```
+
+```json title="GET /api/v2/seasons/2025/events"
+{
+  "year": 2025,
+  "events": [
+    {
+      "round": 1,
+      "event_name": "Bahrain Grand Prix",
+      "circuit": "Bahrain International Circuit",
+      "location": "Sakhir",
+      "date": "2025-03-16"
+    },
+    {
+      "round": 2,
+      "event_name": "Saudi Arabian Grand Prix",
+      "circuit": "Jeddah Corniche Circuit",
+      "location": "Jeddah",
+      "date": "2025-03-23"
+    }
+  ]
+}
+```

@@ -1,0 +1,73 @@
+---
+id: javascript
+title: JavaScript / TypeScript SDK
+sidebar_label: JavaScript
+---
+
+# JavaScript / TypeScript
+
+The `t1api` package supports Node.js 18+ and modern browsers. Full TypeScript types are included out of the box.
+
+## Installation
+
+```bash
+npm install t1api
+# or
+pnpm add t1api
+# or
+yarn add t1api
+```
+
+## Usage
+
+```typescript title="example.ts"
+import { T1Client } from "t1api";
+
+const client = new T1Client({
+  apiKey: process.env.T1API_KEY!,
+});
+
+// Get the current session
+const session = await client.sessions.current();
+console.log(session.sessionName); // "Race"
+
+// Get live timing
+const timing = await client.sessions.timing(session.sessionKey);
+for (const driver of timing) {
+  console.log(`${driver.position}. ${driver.broadcastName} — ${driver.lastLapTime}`);
+}
+
+// Get all sessions for 2025
+const sessions = await client.sessions.list({ year: 2025 });
+
+// Get driver standings
+const standings = await client.standings.drivers({ year: 2025 });
+```
+
+## WebSocket
+
+```typescript title="realtime.ts"
+import { T1Client } from "t1api";
+
+const client = new T1Client({ apiKey: process.env.T1API_KEY! });
+const ws = client.ws.connect();
+
+await ws.subscribe("timing", {
+  sessionKey: "current",
+  driverNumbers: [1, 11, 44],
+});
+
+ws.on("timing.update", (data) => {
+  console.log(`P${data.position} ${data.broadcastName}: ${data.lastLapTime}`);
+});
+
+ws.on("lap.completed", (data) => {
+  console.log(`Lap ${data.lapNumber} — ${data.lapDuration}s`);
+});
+
+process.on("SIGINT", () => ws.close());
+```
+
+<Callout variant="tip">
+The SDK handles reconnection automatically with exponential backoff. You only need to re-register event listeners — subscriptions are restored on reconnect.
+</Callout>

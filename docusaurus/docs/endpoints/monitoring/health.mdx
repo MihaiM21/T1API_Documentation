@@ -1,0 +1,24 @@
+---
+id: health
+title: Health Check
+sidebar_label: Health Check
+---
+
+# Health Check
+
+Public endpoint — no API key required. Returns the operational status of the API and its connected services.
+
+<EndpointCard method="GET" path="/api/health" description="Health check — public, no auth required." />
+
+```json title="response"
+{
+  "status": "healthy",
+  "version": "1.0.0",
+  "environment": "production",
+  "checks": {
+    "database": "ok",
+    "cache": "ok",
+    "data_source": "ok"
+  }
+}
+```

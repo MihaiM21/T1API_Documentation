@@ -1,0 +1,33 @@
+---
+id: drivers
+title: Static — Drivers
+sidebar_label: Drivers
+---
+
+# Static — Drivers
+
+Curated driver reference data. The `year` parameter accepts 2025–2026 for static endpoints.
+
+<EndpointCard method="GET" path="/api/static/drivers" description="List all drivers for the given season." />
+<EndpointCard method="GET" path="/api/static/drivers/{driver_name}" description="Full profile for a named driver." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: false, description: 'Season year (2025–2026). Defaults to current.', default: 'current' },
+  ]}
+/>
+
+```json title="GET /api/static/drivers/Verstappen"
+{
+  "number": 1,
+  "code": "VER",
+  "first_name": "Max",
+  "last_name": "Verstappen",
+  "team": "Red Bull Racing",
+  "nationality": "Dutch",
+  "date_of_birth": "1997-09-30",
+  "world_championships": 4
+}
+```

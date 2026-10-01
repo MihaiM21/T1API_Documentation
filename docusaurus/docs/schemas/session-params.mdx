@@ -1,0 +1,38 @@
+---
+id: session-params
+title: Validation Models
+sidebar_label: Validation Models
+---
+
+# Validation Models
+
+T1API validates incoming request parameters using Pydantic models. Invalid parameters return a `400 Bad Request` with a descriptive message.
+
+## SessionMetadata
+
+```python
+class SessionMetadata(BaseModel):
+    year: int              # Validated: 2018–2030
+    round_number: int      # Validated: 1–24
+    session_type: str      # "Race", "Qualifying", "Practice 1", etc.
+    event_name: str        # "Bahrain Grand Prix"
+    generated_at: str      # ISO 8601 timestamp
+```
+
+## SessionParams & DriverComparisonParams
+
+```python
+class SessionParams(BaseModel):
+    year: int          # Validated: 2018–2030
+    gp: int            # Validated: 1–24
+    session: str       # Validated against allowed sessions list
+
+
+class DriverComparisonParams(SessionParams):
+    driver1: str       # Validated: 3 chars, uppercase (e.g. VER)
+    driver2: str       # Validated: 3 chars, uppercase (e.g. HAM)
+```
+
+<Callout variant="info">
+V2 endpoints use a relaxed `gp` type that accepts `Union[int, str]` — round number, event key, or partial name string. V1 requires an integer round number only.
+</Callout>

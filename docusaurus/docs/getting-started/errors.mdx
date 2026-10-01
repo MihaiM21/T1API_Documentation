@@ -1,0 +1,36 @@
+---
+id: errors
+title: Errors & Status Codes
+---
+
+# Errors & Status Codes
+
+All error responses follow a consistent JSON structure. The `detail` field contains a human-readable description. The `request_id` is included for support and tracing.
+
+```json
+{
+  "detail": "Plot not found for Y2025 GP1 Q",
+  "request_id": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": "2025-04-04T12:34:56.789Z"
+}
+```
+
+## HTTP status codes
+
+<DataTable
+  headers={['Status', 'Meaning', 'Common Cause']}
+  rows={[
+    ['200 OK', 'Success', 'Request processed, data or image returned'],
+    ['400 Bad Request', 'Invalid parameters', 'Missing year/gp/session, invalid driver code'],
+    ['401 Unauthorized', 'No API key', 'X-API-Key header missing'],
+    ['403 Forbidden', 'Invalid API key', 'Key not in allowed list'],
+    ['404 Not Found', 'Resource missing', 'Session data not yet processed or unavailable'],
+    ['429 Too Many Requests', 'Rate limit exceeded', 'Back off and retry after X-RateLimit-Reset'],
+    ['500 Internal Server Error', 'Server error', 'Unexpected failure — contact support with request_id'],
+    ['503 Service Unavailable', 'Temporarily down', 'Retry after a short delay'],
+  ]}
+/>
+
+<Callout variant="tip">
+Always log the `request_id` from error responses. Support requests with a `request_id` resolve faster because the team can trace the exact request in server logs.
+</Callout>

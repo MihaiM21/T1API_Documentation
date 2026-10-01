@@ -1,0 +1,23 @@
+---
+id: speed-distribution
+title: V1 — Speed Distribution
+sidebar_label: Speed Distribution
+---
+
+# Speed Distribution
+
+Distribution of speeds across the track for all drivers or a specific driver.
+
+<EndpointCard method="GET" path="/api/v1/speed-distribution-plot" description="PNG speed distribution histogram." />
+<EndpointCard method="GET" path="/api/v1/speed-distribution-data" description="JSON speed distribution data." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer', required: true, description: 'Grand Prix round number (1–24)' },
+    { name: 'session', type: 'string', required: true, description: 'Session type: Q, R, FP1, FP2, FP3, S, SQ' },
+    { name: 'driver', type: 'string', required: false, description: '3-letter driver code (e.g. VER). Omit for all drivers.' },
+  ]}
+/>

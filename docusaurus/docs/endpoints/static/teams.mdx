@@ -1,0 +1,30 @@
+---
+id: teams
+title: Static — Teams
+sidebar_label: Teams
+---
+
+# Static — Teams
+
+<EndpointCard method="GET" path="/api/static/teams" description="List all constructors for the given season." />
+<EndpointCard method="GET" path="/api/static/teams/{team_name}" description="Full constructor profile by name." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: false, description: 'Season year (2025–2026). Defaults to current.', default: 'current' },
+  ]}
+/>
+
+```json title="GET /api/static/teams/Red Bull"
+{
+  "name": "Red Bull Racing",
+  "full_name": "Oracle Red Bull Racing",
+  "colour": "#0600EF",
+  "drivers": ["VER", "PER"],
+  "chassis": "RB21",
+  "power_unit": "Honda RBPT",
+  "base": "Milton Keynes, UK"
+}
+```

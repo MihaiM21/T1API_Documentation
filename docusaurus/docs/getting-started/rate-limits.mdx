@@ -1,0 +1,49 @@
+---
+id: rate-limits
+title: Rate Limits
+---
+
+# Rate Limits
+
+Rate limiting is applied on a rolling window. Exceeding the limit returns a `429 Too Many Requests`. Limits are tracked separately per API key (or per IP for the public tier).
+
+<DataTable
+  headers={['Tier', 'Requests / min', 'Requests / hour', 'Identifier']}
+  rows={[
+    ['Public', '30', '500', 'public:{ip_address}'],
+    ['Standard', '100', '2,000', 'standard:{api_key}'],
+    ['Premium', '300', '10,000', 'premium:{api_key}'],
+    ['Data endpoints (all tiers)', '60', '1,000', 'data:{tier}:{identifier}'],
+  ]}
+/>
+
+<Callout variant="warning">
+Endpoints whose path ends in `-data` (e.g. `/api/v2/top-speed-telemetry-data`) use a separate counter that is **additive** to the tier counter — both limits apply simultaneously.
+</Callout>
+
+## Rate limit headers
+
+Every response includes the following headers:
+
+```http
+X-RateLimit-Limit: 300
+X-RateLimit-Remaining: 297
+X-RateLimit-Reset: 1743768060
+```
+
+`X-RateLimit-Reset` is a Unix timestamp (seconds) indicating when the current window rolls over.
+
+## Backoff strategy
+
+On a `429`, read `X-RateLimit-Reset` and wait until that timestamp before retrying. Exponential backoff with jitter is recommended for production clients:
+
+```javascript
+async function call(url, opts, attempt = 0) {
+  const res = await fetch(url, opts);
+  if (res.status !== 429) return res;
+  const reset = Number(res.headers.get('X-RateLimit-Reset')) * 1000;
+  const wait = Math.max(reset - Date.now(), 1000 * 2 ** attempt);
+  await new Promise((r) => setTimeout(r, wait + Math.random() * 500));
+  return call(url, opts, attempt + 1);
+}
+```

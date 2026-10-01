@@ -1,0 +1,45 @@
+---
+id: authentication
+title: Authentication
+---
+
+# Authentication
+
+T1API uses API key authentication. Pass your key in the `X-API-Key` request header on every protected endpoint. The health check (`GET /api/health`) and the root endpoint are publicly accessible without a key.
+
+```http
+GET /api/v2/top-speed-telemetry-data?year=2025&gp=1&session=Q HTTP/1.1
+Host: api.t1f1.com
+X-API-Key: your_api_key_here
+```
+
+<Callout variant="info">
+In development mode with no keys configured, requests are accepted without authentication. This only applies when the environment is set to `development`.
+</Callout>
+
+## Key tiers
+
+API keys are issued in three tiers with different rate limits and access levels:
+
+<DataTable
+  headers={['Tier', 'Header Required', 'Access']}
+  rows={[
+    ['Public', 'None', 'Health check, root endpoint only'],
+    ['Standard', 'X-API-Key: <key>', 'All V1, V2, and static endpoints'],
+    ['Premium', 'X-API-Key: <premium-key>', 'Standard access + elevated rate limits; reserved for turnonehub.com and t1f1.com'],
+  ]}
+/>
+
+## Session parameters
+
+Analysis endpoints require three query parameters that identify the specific session:
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018 – 2030)' },
+    { name: 'gp', type: 'integer | string', required: true, description: 'Grand Prix round number (1–24), event key, or official name (V2 only)' },
+    { name: 'session', type: 'string', required: true, description: 'Session type: Q, R, FP1, FP2, FP3, S, SQ, …' },
+  ]}
+/>
+
+Driver parameters use the official 3-letter uppercase code (e.g. `VER`, `HAM`). Two-driver comparison endpoints require both `driver1` and `driver2`.

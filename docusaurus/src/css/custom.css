@@ -1,0 +1,304 @@
+/**
+ * T1API — Turn One brand palette mapped onto Infima
+ * Dark-only theme. Red primary in OKLch space.
+ */
+
+:root {
+  --t1-bg: #0a0a0a;
+  --t1-bg-elev: #141414;
+  --t1-card: #171717;
+  --t1-border: #262626;
+  --t1-border-strong: #383838;
+  --t1-fg: #f2f2f2;
+  --t1-fg-muted: #9a9a9a;
+  --t1-fg-dim: #6b6b6b;
+
+  --t1-red: #ef3946;
+  --t1-red-bright: #ff4d5b;
+  --t1-red-dim: #c52838;
+  --t1-red-glow: rgba(239, 57, 70, 0.18);
+
+  --t1-code-bg: #0f0f0f;
+  --t1-code-border: #2a2a2a;
+
+  /* Infima overrides */
+  --ifm-color-primary: var(--t1-red);
+  --ifm-color-primary-dark: var(--t1-red-dim);
+  --ifm-color-primary-darker: #b1212f;
+  --ifm-color-primary-darkest: #8d1923;
+  --ifm-color-primary-light: var(--t1-red-bright);
+  --ifm-color-primary-lighter: #ff6271;
+  --ifm-color-primary-lightest: #ff8b96;
+
+  --ifm-background-color: var(--t1-bg);
+  --ifm-background-surface-color: var(--t1-card);
+
+  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ifm-font-size-base: 15px;
+  --ifm-line-height-base: 1.65;
+
+  --ifm-heading-color: var(--t1-fg);
+  --ifm-heading-font-weight: 700;
+  --ifm-h1-font-size: 2.25rem;
+  --ifm-h2-font-size: 1.5rem;
+  --ifm-h3-font-size: 1.125rem;
+
+  --ifm-code-font-size: 0.875em;
+  --ifm-code-background: var(--t1-code-bg);
+  --ifm-code-border-radius: 4px;
+  --ifm-code-padding-horizontal: 0.4em;
+
+  --ifm-pre-background: var(--t1-code-bg);
+  --ifm-pre-border-radius: 8px;
+
+  --ifm-link-color: var(--t1-red);
+  --ifm-link-hover-color: var(--t1-red-bright);
+
+  --ifm-navbar-background-color: rgba(10, 10, 10, 0.85);
+  --ifm-navbar-shadow: 0 1px 0 var(--t1-border);
+  --ifm-navbar-height: 60px;
+
+  --ifm-footer-background-color: #050505;
+  --ifm-footer-color: var(--t1-fg-muted);
+  --ifm-footer-link-color: var(--t1-fg-muted);
+  --ifm-footer-title-color: var(--t1-fg);
+
+  --ifm-toc-border-color: var(--t1-border);
+  --ifm-table-border-color: var(--t1-border);
+  --ifm-table-stripe-background: rgba(255, 255, 255, 0.02);
+  --ifm-table-head-background: var(--t1-bg-elev);
+  --ifm-table-head-color: var(--t1-fg-muted);
+
+  --ifm-blockquote-color: var(--t1-fg-muted);
+  --ifm-blockquote-border-color: var(--t1-red);
+
+  --ifm-menu-color: var(--t1-fg-muted);
+  --ifm-menu-color-active: var(--t1-fg);
+  --ifm-menu-color-background-active: rgba(239, 57, 70, 0.08);
+  --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.04);
+
+  --docusaurus-highlighted-code-line-bg: rgba(239, 57, 70, 0.12);
+}
+
+/* Force dark always */
+html,
+html[data-theme='light'],
+html[data-theme='dark'] {
+  color-scheme: dark;
+  background: var(--t1-bg);
+  color: var(--t1-fg);
+}
+
+body {
+  background: var(--t1-bg);
+  color: var(--t1-fg);
+  font-family: var(--ifm-font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Navbar */
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--t1-border);
+}
+.navbar__title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.navbar__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--t1-fg-muted);
+}
+.navbar__link:hover,
+.navbar__link--active {
+  color: var(--t1-fg);
+}
+
+/* Sidebar */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--t1-border) !important;
+  background: var(--t1-bg);
+}
+.menu__link {
+  font-size: 0.875rem;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+}
+.menu__list-item-collapsible > .menu__link {
+  font-weight: 600;
+  color: var(--t1-fg);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.menu__link--active {
+  background: var(--ifm-menu-color-background-active);
+  color: var(--t1-fg) !important;
+  font-weight: 500;
+  position: relative;
+}
+.menu__link--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 25%;
+  bottom: 25%;
+  width: 2px;
+  background: var(--t1-red);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Doc content */
+.markdown {
+  font-size: 0.9375rem;
+}
+.markdown h1:first-child {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
+}
+.markdown > h2 {
+  margin-top: 2.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--t1-border);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+.markdown > h3 {
+  margin-top: 1.75rem;
+  font-weight: 600;
+}
+.markdown p {
+  color: #d4d4d4;
+}
+.markdown a {
+  text-decoration: none;
+  border-bottom: 1px dotted var(--t1-red);
+}
+.markdown a:hover {
+  border-bottom-style: solid;
+}
+.markdown code:not(pre code) {
+  color: var(--t1-red);
+  background: rgba(239, 57, 70, 0.08);
+  border: 1px solid rgba(239, 57, 70, 0.18);
+  font-size: 0.85em;
+}
+
+/* Code blocks */
+.theme-code-block {
+  border: 1px solid var(--t1-code-border);
+  border-radius: 8px;
+  box-shadow: none !important;
+}
+.prism-code {
+  font-size: 0.85rem !important;
+  line-height: 1.55 !important;
+}
+
+/* Tables */
+.markdown table {
+  display: table;
+  width: 100%;
+  border: 1px solid var(--t1-border);
+  border-radius: 8px;
+  overflow: hidden;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+.markdown table thead tr {
+  background: var(--t1-bg-elev);
+}
+.markdown table th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--t1-fg-muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.6rem 0.9rem;
+}
+.markdown table td {
+  padding: 0.65rem 0.9rem;
+  font-size: 0.85rem;
+  color: #d4d4d4;
+  border-top: 1px solid var(--t1-border);
+}
+
+/* Admonitions */
+.alert {
+  border-radius: 8px;
+  border-left-width: 3px;
+  font-size: 0.9rem;
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--t1-border);
+}
+.footer__title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--t1-fg);
+}
+.footer__link-item {
+  font-size: 0.85rem;
+}
+
+/* Pagination */
+.pagination-nav__link {
+  border: 1px solid var(--t1-border);
+  border-radius: 8px;
+  background: var(--t1-card);
+}
+.pagination-nav__link:hover {
+  border-color: var(--t1-red);
+  background: var(--t1-bg-elev);
+}
+.pagination-nav__sublabel {
+  color: var(--t1-fg-dim);
+}
+.pagination-nav__label {
+  color: var(--t1-fg);
+}
+
+/* TOC */
+.table-of-contents__link {
+  color: var(--t1-fg-dim);
+  font-size: 0.8rem;
+}
+.table-of-contents__link:hover,
+.table-of-contents__link--active {
+  color: var(--t1-red) !important;
+}
+.table-of-contents {
+  border-left: 1px solid var(--t1-border);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--t1-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+/* Selection */
+::selection {
+  background: var(--t1-red-glow);
+  color: var(--t1-fg);
+}

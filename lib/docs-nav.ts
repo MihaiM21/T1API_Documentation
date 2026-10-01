@@ -1,3 +1,5 @@
+import { GROUPS } from "@/lib/catalog"
+
 export interface NavItem {
   label: string
   href: string
@@ -16,73 +18,73 @@ export const docsNav: NavSection[] = [
     defaultOpen: true,
     items: [
       { label: "Introduction", href: "/docs" },
-      { label: "Quick Start", href: "/docs#quick-start" },
+      { label: "Quick start", href: "/docs#quick-start" },
       { label: "Authentication", href: "/docs#authentication" },
-      { label: "Rate Limits", href: "/docs#rate-limits" },
-      { label: "Base URL", href: "/docs#base-url" },
-      { label: "Response Formats", href: "/docs#response-formats" },
-      { label: "Errors", href: "/docs#errors" },
-      { label: "Status Codes", href: "/docs#status-codes" },
+      { label: "Rate limits", href: "/docs#rate-limits" },
+      { label: "Playground", href: "/docs/playground", badge: "Live" },
     ],
   },
   {
-    title: "V1 Endpoints",
+    title: "Concepts",
     items: [
-      { label: "Overview", href: "/docs/endpoints#v1-overview" },
-      { label: "Top Speed", href: "/docs/endpoints#v1-top-speed" },
-      { label: "Throttle Comparison", href: "/docs/endpoints#v1-throttle" },
-      { label: "Qualifying Results", href: "/docs/endpoints#v1-qualifying" },
-      { label: "Speed Distribution", href: "/docs/endpoints#v1-speed-dist" },
-      { label: "Lap Times", href: "/docs/endpoints#v1-laptimes" },
-      { label: "2-Driver Comparison", href: "/docs/endpoints#v1-2driver" },
-      { label: "Seasonal Data", href: "/docs/endpoints#v1-seasonal" },
-      { label: "Analytics", href: "/docs/endpoints#v1-analytics" },
+      { label: "Sessions & identifiers", href: "/docs/concepts#sessions" },
+      { label: "Plots, JSON & CSV", href: "/docs/concepts#formats" },
+      { label: "Social canvases", href: "/docs/concepts#canvases" },
+      { label: "Caching & ETags", href: "/docs/concepts#caching" },
+      { label: "Errors & retries", href: "/docs/concepts#errors" },
+      { label: "Versioning", href: "/docs/concepts#versioning" },
     ],
   },
   {
-    title: "V2 Endpoints",
+    title: "Endpoints",
     items: [
-      { label: "Overview", href: "/docs/endpoints#v2-overview" },
-      { label: "Top Speed Telemetry", href: "/docs/endpoints#v2-top-speed" },
-      { label: "Speed Trap", href: "/docs/endpoints#v2-speed-trap" },
-      { label: "Throttle Comparison", href: "/docs/endpoints#v2-throttle" },
-      { label: "Speed Distribution", href: "/docs/endpoints#v2-speed-dist" },
-      { label: "Seasonal Events", href: "/docs/endpoints#v2-seasonal" },
+      { label: "All endpoints", href: "/docs/endpoints" },
+      ...GROUPS.map((g) => ({ label: g.title, href: `/docs/endpoints#group-${g.id}` })),
     ],
   },
   {
-    title: "Static & General",
+    title: "Account",
     items: [
-      { label: "Static Drivers", href: "/docs/endpoints#static-drivers" },
-      { label: "Static Teams", href: "/docs/endpoints#static-teams" },
-      { label: "Static Circuits", href: "/docs/endpoints#static-circuits" },
-      { label: "Dashboard & Daily", href: "/docs/endpoints#general" },
-      { label: "Health Check", href: "/docs/endpoints#health" },
+      { label: "Keys & usage", href: "/docs/account" },
+      { label: "Sign up & sign in", href: "/docs/account#auth" },
+      { label: "Usage dashboards", href: "/docs/account#usage" },
     ],
   },
   {
-    title: "Monitoring",
+    title: "Guides",
     items: [
-      { label: "Overview", href: "/docs/endpoints#monitoring-overview" },
-      { label: "System Metrics", href: "/docs/endpoints#monitoring-system" },
-      { label: "Request Tracking", href: "/docs/endpoints#monitoring-requests" },
-      { label: "Prometheus", href: "/docs/endpoints#monitoring-prometheus" },
-    ],
-  },
-  {
-    title: "Data Structures",
-    items: [
-      { label: "Telemetry Schema", href: "/docs/schemas#telemetry" },
-      { label: "Timing Data", href: "/docs/schemas#timing" },
-      { label: "Session Params", href: "/docs/schemas#session-params" },
-      { label: "Error Responses", href: "/docs/schemas#errors" },
+      { label: "Recipes", href: "/docs/recipes" },
+      { label: "Live data & polling", href: "/docs/recipes#live-data" },
+      { label: "Migrating from V1", href: "/docs/migration", badge: "Sunset" },
     ],
   },
   {
     title: "Reference",
     items: [
-      { label: "SDKs & Libraries", href: "/docs/sdks" },
+      { label: "Response schemas", href: "/docs/schemas" },
+      { label: "TypeScript types", href: "/docs/schemas#typescript" },
       { label: "Changelog", href: "/docs/changelog" },
     ],
   },
 ]
+
+/** Linear reading order, used for prev/next links on top-level pages. */
+export const pageOrder = [
+  { label: "Introduction", href: "/docs" },
+  { label: "Concepts", href: "/docs/concepts" },
+  { label: "Endpoints", href: "/docs/endpoints" },
+  { label: "Playground", href: "/docs/playground" },
+  { label: "Account & keys", href: "/docs/account" },
+  { label: "Recipes", href: "/docs/recipes" },
+  { label: "Response schemas", href: "/docs/schemas" },
+  { label: "Migrating from V1", href: "/docs/migration" },
+  { label: "Changelog", href: "/docs/changelog" },
+]
+
+export function neighbours(href: string) {
+  const i = pageOrder.findIndex((p) => p.href === href)
+  return {
+    prev: i > 0 ? pageOrder[i - 1] : undefined,
+    next: i >= 0 && i < pageOrder.length - 1 ? pageOrder[i + 1] : undefined,
+  }
+}

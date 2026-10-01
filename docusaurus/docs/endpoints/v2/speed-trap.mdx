@@ -1,0 +1,22 @@
+---
+id: speed-trap
+title: V2 — Speed Trap
+sidebar_label: Speed Trap
+---
+
+# Speed Trap
+
+Speed trap comparison using official F1 speed trap sensors (ST data). Differs from telemetry top speed in that it captures a fixed measurement point on track.
+
+<EndpointCard method="GET" path="/api/v2/top-speed-st-plot" description="PNG speed trap comparison chart." />
+<EndpointCard method="GET" path="/api/v2/top-speed-st-data" description="JSON speed trap data." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer | string', required: true, description: 'Round number, event key, or official name' },
+    { name: 'session', type: 'string', required: true, description: 'Session type' },
+  ]}
+/>

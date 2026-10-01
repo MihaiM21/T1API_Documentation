@@ -1,0 +1,38 @@
+---
+id: seasonal
+title: V1 — Seasonal Data
+sidebar_label: Seasonal Data
+---
+
+# Seasonal Data
+
+Season-level driver and team reference data via the V1 pipeline.
+
+<EndpointCard method="GET" path="/api/v1/seasons" description="List all available seasons." />
+<EndpointCard method="GET" path="/api/v1/season/{year}" description="Complete season data including all rounds." />
+<EndpointCard method="GET" path="/api/v1/season/{year}/drivers" description="All drivers for the specified season." />
+<EndpointCard method="GET" path="/api/v1/season/{year}/teams" description="All constructors for the specified season." />
+<EndpointCard method="GET" path="/api/v1/season/{year}/driver/{driver_code}" description="Full profile for a single driver in that season." />
+<EndpointCard method="GET" path="/api/v1/season/{year}/team/{team_name}" description="Full profile for a single constructor." />
+
+```json title="GET /api/v1/season/2025/drivers"
+{
+  "year": 2025,
+  "drivers": [
+    {
+      "number": 1,
+      "code": "VER",
+      "first_name": "Max",
+      "last_name": "Verstappen",
+      "team": "Red Bull Racing"
+    },
+    {
+      "number": 44,
+      "code": "HAM",
+      "first_name": "Lewis",
+      "last_name": "Hamilton",
+      "team": "Ferrari"
+    }
+  ]
+}
+```

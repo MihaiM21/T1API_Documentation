@@ -1,0 +1,33 @@
+---
+id: overview
+title: Real-Time Data — Overview
+sidebar_label: Overview
+---
+
+# Real-Time Data
+
+T1API is a REST API — it does not expose a WebSocket endpoint. Real-time data is delivered by polling the analysis endpoints, which source live session data directly from `livetiming.formula1.com` via the V2 pipeline. This page explains how to use the API effectively during live sessions.
+
+## How live data works
+
+When a session is active, V2 endpoints call the F1 live timing server on every request before returning a response. The result is cached in MongoDB with a configurable TTL (default: 3,600 seconds). During a live session, the cache is invalidated based on session state changes to keep data fresh.
+
+<DataTable
+  headers={['Pipeline', 'Data Source', 'Latency', 'Best For']}
+  rows={[
+    ['V1 (/api/v1/…)', 'FastF1 local cache', 'Higher — requires local cache warmup', 'Historical analysis and post-race review'],
+    ['V2 (/api/v2/…)', 'livetiming.formula1.com (direct)', 'Low — direct API call', 'Live sessions, current season'],
+  ]}
+/>
+
+## Data freshness
+
+<DataTable
+  headers={['Situation', 'V2 Data Freshness', 'Notes']}
+  rows={[
+    ['Session active (live)', '< 30 seconds', 'Cache TTL is short during sessions; V2 re-fetches from F1 server'],
+    ['Session just finished', '< 5 minutes', 'Final data may take a few minutes to propagate'],
+    ['Historical session (cached)', 'Permanent', 'MongoDB cache hit — instant response, no re-fetch needed'],
+    ['Session not yet processed', 'N/A — 404', 'Request data once the session has started'],
+  ]}
+/>

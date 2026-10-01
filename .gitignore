@@ -1,7 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
 
 # next.js
 /.next/
@@ -9,6 +12,11 @@
 
 # production
 /build
+dist/
+
+# docusaurus (sub-project in /docusaurus)
+/docusaurus/.docusaurus/
+/docusaurus/build/
 
 # debug
 npm-debug.log*
@@ -16,8 +24,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
+# env files (keep examples)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -25,3 +34,20 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# testing / coverage
+/coverage
+
+# archives and local reference dumps
+*.zip
+
+# graphify output
+graphify-out/
+
+# local tooling and editor / OS files
+.claude/settings.local.json
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.pem

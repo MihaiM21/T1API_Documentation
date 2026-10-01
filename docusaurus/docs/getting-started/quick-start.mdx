@@ -1,0 +1,90 @@
+---
+id: quick-start
+title: Quick Start
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Quick Start
+
+Get up and running in under two minutes. You need an API key and a single HTTP request.
+
+## 1. Get your API key
+
+Contact the Turn One Hub team via [turnonehub.com](https://turnonehub.com) or your dashboard to obtain an API key. Keys are issued per application and associated with a rate-limit tier (Public, Standard, or Premium).
+
+<Callout variant="warning">
+Store your API key in an environment variable. Never commit it to source control or expose it in client-side code.
+</Callout>
+
+## 2. Make your first request
+
+Pass your key in the `X-API-Key` header. All analysis requests are `GET` with query-string parameters.
+
+<Tabs groupId="lang">
+  <TabItem value="curl" label="cURL" default>
+
+```bash
+curl -X GET "https://api.t1f1.com/api/v2/top-speed-telemetry-data?year=2025&gp=1&session=Q" \
+  -H "X-API-Key: YOUR_API_KEY"
+```
+
+  </TabItem>
+  <TabItem value="js" label="JavaScript">
+
+```javascript
+const res = await fetch(
+  "https://api.t1f1.com/api/v2/top-speed-telemetry-data?year=2025&gp=1&session=Q",
+  { headers: { "X-API-Key": "YOUR_API_KEY" } }
+);
+const data = await res.json();
+console.log(data.drivers[0]); // { driver_code: "VER", top_speed: 326.4, ... }
+```
+
+  </TabItem>
+  <TabItem value="py" label="Python">
+
+```python
+import requests
+
+resp = requests.get(
+    "https://api.t1f1.com/api/v2/top-speed-telemetry-data",
+    params={"year": 2025, "gp": 1, "session": "Q"},
+    headers={"X-API-Key": "YOUR_API_KEY"},
+)
+data = resp.json()
+print(data["drivers"][0])
+```
+
+  </TabItem>
+</Tabs>
+
+## 3. Parse the response
+
+```json
+{
+  "drivers": [
+    {
+      "driver_code": "VER",
+      "driver_name": "Max Verstappen",
+      "top_speed": 326.4,
+      "lap_number": 15,
+      "session": "Q"
+    },
+    {
+      "driver_code": "LEC",
+      "driver_name": "Charles Leclerc",
+      "top_speed": 324.1,
+      "lap_number": 14,
+      "session": "Q"
+    }
+  ]
+}
+```
+
+## Next steps
+
+- Try this endpoint live in the [Playground](/playground)
+- Browse the full [V2 endpoint reference](../endpoints/v2/top-speed-telemetry)
+- Learn about [rate limits](./rate-limits) and [errors](./errors)

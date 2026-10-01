@@ -1,0 +1,66 @@
+---
+id: metrics
+title: Monitoring & Request Tracking
+sidebar_label: System & Requests
+---
+
+# Monitoring
+
+The API exposes a suite of observability endpoints. All monitoring endpoints require authentication and are intended for operators and dashboards.
+
+<DataTable
+  headers={['Path', 'Description']}
+  rows={[
+    ['/api/monitoring/system', 'Real-time CPU, RAM, disk, and network usage'],
+    ['/api/monitoring/requests', 'Recent requests with request_id, method, path, duration, status'],
+    ['/api/monitoring/errors', 'Recent errors with type, message, stack trace, and request_id'],
+    ['/api/monitoring/stats', 'Per-endpoint statistics: total requests, error rate, avg/min/max response time'],
+    ['/api/monitoring/load', 'Current active request count, overall error rate, and system load'],
+  ]}
+/>
+
+## System metrics
+
+<EndpointCard method="GET" path="/api/monitoring/system" description="Real-time server resource utilization." />
+
+```json title="GET /api/monitoring/system"
+{
+  "cpu": { "process_percent": 25.5, "system_percent": 45.2 },
+  "memory": {
+    "process_mb": 245.3,
+    "process_percent": 12.1,
+    "available_mb": 7654.2,
+    "total_mb": 16384.0
+  },
+  "disk": {
+    "usage_percent": 68.3,
+    "available_gb": 45.2,
+    "total_gb": 119.2
+  },
+  "uptime": 86400,
+  "uptime_human": "1 day"
+}
+```
+
+## Request tracking
+
+Every request is assigned a unique `request_id` (UUID) for correlation across logs and error reports.
+
+<EndpointCard method="GET" path="/api/monitoring/requests" description="Recent requests with full tracing metadata." />
+<EndpointCard method="GET" path="/api/monitoring/errors" description="Recent errors with stack traces and request context." />
+<EndpointCard method="GET" path="/api/monitoring/stats" description="Aggregate per-endpoint request statistics." />
+<EndpointCard method="GET" path="/api/monitoring/load" description="Current active request count and error rate." />
+
+```json title="GET /api/monitoring/requests — response item"
+{
+  "request_id": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": "2025-04-04T12:34:56.789Z",
+  "method": "GET",
+  "path": "/api/v1/top-speed-plot",
+  "endpoint": "quali_top_speed_plot",
+  "status_code": 200,
+  "duration_ms": 1234,
+  "client_ip": "192.168.1.100",
+  "api_key_tier": "standard"
+}
+```

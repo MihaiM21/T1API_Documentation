@@ -1,0 +1,35 @@
+---
+id: intro
+title: T1API Documentation
+sidebar_label: Introduction
+slug: /intro
+---
+
+# T1API Documentation
+
+T1API is a production-grade Formula 1 telemetry analysis and visualization platform. It provides programmatic access to real-time and historical F1 session data — including speed, throttle, brake, driver comparisons, qualifying results, and full telemetry — via a clean REST API deployed at `api.t1f1.com`.
+
+The API is built with FastAPI and exposes two data pipelines: **V1** (powered by the FastF1 library) and **V2** (a custom direct client to `livetiming.formula1.com`). All major analysis endpoints return both a PNG visualization and a JSON data payload.
+
+<DataTable
+  headers={['Pipeline', 'Data Source', 'Best For']}
+  rows={[
+    ['V1 (/api/v1/…)', 'FastF1 library (local cache)', 'Historical analysis, 2018+ data'],
+    ['V2 (/api/v2/…)', 'Direct livetiming.formula1.com client', 'Real-time and latest season data'],
+    ['Static (/api/static/…)', 'Curated reference data', 'Drivers, teams, circuits'],
+  ]}
+/>
+
+## Quick facts
+
+- **Base URL:** `https://api.t1f1.com`
+- **Auth header:** `X-API-Key: <your-key>`
+- **Seasons covered:** 2018 — present
+- **Live API version:** <ApiVersionBadge />
+
+## Where to next
+
+- [Quick Start](./getting-started/quick-start) — make your first request in under two minutes
+- [Authentication](./getting-started/authentication) — key tiers and headers
+- [Playground](/playground) — try endpoints live in your browser
+- [V1 Endpoints](./endpoints/v1/top-speed) · [V2 Endpoints](./endpoints/v2/top-speed-telemetry)

@@ -1,0 +1,54 @@
+---
+id: timing
+title: Timing Data
+sidebar_label: Timing
+---
+
+# Timing Data
+
+Live timing originates from `TimingData.json` on the F1 live timing server. Lap and sector times are expressed in milliseconds.
+
+```json title="TimingData — single driver record"
+{
+  "Utc": "2025-03-16T13:45:23Z",
+  "Lines": {
+    "1": {
+      "LastLapTime": 80123,
+      "LastLapTimeInMs": 80123,
+      "LastSectorTime": 32100,
+      "LastSectorTimeInMs": 32100,
+      "LapsCompleted": 45,
+      "Pit": 0,
+      "InPit": false,
+      "FastestLapNum": 22,
+      "FastestLap": 79456,
+      "Status": "OnTrack"
+    }
+  }
+}
+```
+
+<DataTable
+  headers={['Field', 'Type', 'Description']}
+  rows={[
+    ['LastLapTime', 'integer (ms)', 'Duration of the most recently completed lap'],
+    ['LastSectorTime', 'integer (ms)', 'Duration of the most recently completed sector'],
+    ['FastestLap', 'integer (ms)', "Driver's personal best lap time this session"],
+    ['FastestLapNum', 'integer', 'Lap number on which the personal best was set'],
+    ['Status', 'string', 'OnTrack, InPit, OutLap, Retired'],
+  ]}
+/>
+
+## Database cache
+
+Processed analysis results are cached in MongoDB to avoid recomputing the same session. Collections are named by year and pipeline version.
+
+<DataTable
+  headers={['Collection Name', 'Pipeline', 'Description']}
+  rows={[
+    ['{year}_processed_data', 'V1 (FastF1)', 'Cached V1 analysis results'],
+    ['{year}_processed_data_v2', 'V2 (Custom client)', 'Cached V2 analysis results'],
+  ]}
+/>
+
+Cache TTL defaults to 3,600 seconds (1 hour). The cache is invalidated automatically when a session state change is detected.

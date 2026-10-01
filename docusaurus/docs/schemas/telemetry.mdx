@@ -1,0 +1,57 @@
+---
+id: telemetry
+title: Telemetry Schema
+sidebar_label: Telemetry
+---
+
+# Telemetry Schema (V2)
+
+V2 telemetry originates from two F1 live data streams: `CarData.z.jsonStream` and `PositionData.z.jsonStream`. Both streams use a concatenated JSON format — one object per sample, separated by newlines.
+
+## CarData channels
+
+The `Channels` object maps numeric keys to telemetry values. Apply the scaling factors below before displaying to users.
+
+<DataTable
+  headers={['Channel Key', 'Name', 'Unit', 'Notes']}
+  rows={[
+    ['0', 'Speed', 'km/h', 'Raw value already in km/h'],
+    ['2', 'RPM', 'rpm/10', 'Divide by 10 to get actual RPM'],
+    ['3', 'Gear', '0–8', '0 = reverse, 1–8 = forward gears'],
+    ['4', 'Throttle', '%', '0–100'],
+    ['5', 'Brake', '%', '0–100'],
+  ]}
+/>
+
+```json title="CarData.z.jsonStream — sample record"
+{
+  "Utc": "2025-03-16T13:00:00Z",
+  "Lines": {
+    "1": {
+      "RacingNumber": 1,
+      "Line": 1,
+      "DriverNumber": 1,
+      "LapsCompleted": 45,
+      "LastLapTime": 80123,
+      "Pit": 0,
+      "TyreStint": 1,
+      "TyreAge": 23,
+      "TyreCompound": "MEDIUM",
+      "Channels": { "0": 252, "2": 14200, "3": 6, "4": 85, "5": 0 }
+    }
+  }
+}
+```
+
+## PositionData stream
+
+Car coordinates in meters relative to a circuit-specific origin. The `Z` axis represents elevation.
+
+```json title="PositionData.z.jsonStream"
+{
+  "Utc": "2025-03-16T13:00:00Z",
+  "Position": [
+    { "RacingNumber": 1, "X": 1234.56, "Y": 5678.90, "Z": 23.45 }
+  ]
+}
+```

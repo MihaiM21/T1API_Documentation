@@ -1,0 +1,65 @@
+---
+id: go
+title: Go SDK
+sidebar_label: Go
+---
+
+# Go
+
+The Go client provides idiomatic, context-aware bindings for all T1API endpoints.
+
+## Installation
+
+```bash
+go get github.com/turnonehub/t1api-go
+```
+
+## Usage
+
+```go title="main.go"
+package main
+
+import (
+  "context"
+  "fmt"
+  "log"
+  "os"
+
+  t1api "github.com/turnonehub/t1api-go"
+)
+
+func main() {
+  client := t1api.NewClient(os.Getenv("T1API_KEY"))
+
+  ctx := context.Background()
+
+  session, err := client.Sessions.Current(ctx)
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Println(session.SessionName)
+
+  timing, err := client.Sessions.Timing(ctx, session.SessionKey, nil)
+  if err != nil {
+    log.Fatal(err)
+  }
+  for _, driver := range timing {
+    fmt.Printf("%d. %s — %s\n", driver.Position, driver.BroadcastName, driver.LastLapTime)
+  }
+}
+```
+
+## Community SDKs
+
+<DataTable
+  headers={['Name', 'Language', 'Repo']}
+  rows={[
+    ['t1api-rust', 'Rust (Tokio + reqwest)', 'github.com/turnonehub/t1api-rust'],
+    ['t1api-dart', 'Dart / Flutter', 'github.com/turnonehub/t1api-dart'],
+    ['t1api-r', 'R', 'github.com/turnonehub/t1api-r'],
+  ]}
+/>
+
+<Callout variant="info" title="Submit your SDK">
+Built a T1API SDK in another language? Open a pull request on the [Turn One Hub GitHub organization](https://github.com/turnonehub) to get it listed here.
+</Callout>

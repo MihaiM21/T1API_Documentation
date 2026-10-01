@@ -5,32 +5,30 @@ import { Menu } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { SiteHeader } from "@/components/site-header"
 import { DocsSidebar } from "@/components/docs-sidebar"
+import { SiteFooter } from "@/components/site-footer"
 
 export function DocsLayoutClient({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
 
-  // Close sidebar on navigation
-  useEffect(() => {
+  // Close the mobile drawer on navigation (state adjusted during render, not in an effect).
+  const [prevPath, setPrevPath] = useState(pathname)
+  if (prevPath !== pathname) {
+    setPrevPath(pathname)
     setSidebarOpen(false)
-  }, [pathname])
+  }
 
-  // Close sidebar on Escape
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setSidebarOpen(false)
     }
-    document.addEventListener("keydown", handleKeyDown)
-    return () => document.removeEventListener("keydown", handleKeyDown)
+    document.addEventListener("keydown", onKey)
+    return () => document.removeEventListener("keydown", onKey)
   }, [])
 
-  // Lock body scroll when drawer is open on mobile
+  // Lock body scroll while the mobile drawer is open.
   useEffect(() => {
-    if (sidebarOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
-    }
+    document.body.style.overflow = sidebarOpen ? "hidden" : ""
     return () => {
       document.body.style.overflow = ""
     }
@@ -39,36 +37,30 @@ export function DocsLayoutClient({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
-
       <DocsSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Mobile overlay backdrop */}
       {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-20 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-          aria-hidden="true"
-        />
+        <div className="fixed inset-0 bg-black/60 z-20 lg:hidden" onClick={() => setSidebarOpen(false)} aria-hidden="true" />
       )}
 
       <div className="lg:pl-64">
-        {/* Mobile docs menu bar — visible below header on small screens */}
         <div className="sticky top-14 z-10 flex items-center gap-3 px-4 h-10 border-b border-border bg-background/90 backdrop-blur-sm lg:hidden">
           <button
+            type="button"
             onClick={() => setSidebarOpen(true)}
             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             aria-label="Open docs navigation"
+            aria-expanded={sidebarOpen}
           >
             <Menu className="h-4 w-4" />
             <span>Menu</span>
           </button>
         </div>
 
-        <main className="pt-14 min-h-screen">
-          <div className="xl:pr-4">
-            {children}
-          </div>
+        <main id="main" className="pt-14 min-h-screen">
+          {children}
         </main>
+        <SiteFooter />
       </div>
     </div>
   )

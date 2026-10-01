@@ -1,0 +1,31 @@
+---
+id: two-driver
+title: V1 — 2-Driver Comparison
+sidebar_label: 2-Driver Comparison
+---
+
+# 2-Driver Comparison
+
+Head-to-head telemetry comparisons between two drivers on the same lap.
+
+<EndpointCard method="GET" path="/api/v1/track-comparison-2drivers-plot" description="Track map coloured by relative speed between two drivers." />
+<EndpointCard method="GET" path="/api/v1/track-comparison-2drivers-data" description="JSON track comparison data." />
+<EndpointCard method="GET" path="/api/v1/throttleBrake-comparison-2drivers-plot" description="Throttle and brake overlay for two drivers." />
+<EndpointCard method="GET" path="/api/v1/throttleBrake-comparison-2drivers-data" description="JSON throttle/brake comparison data." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer', required: true, description: 'Grand Prix round number (1–24)' },
+    { name: 'session', type: 'string', required: true, description: 'Session type: Q, R, FP1, FP2, FP3, S, SQ' },
+    { name: 'driver1', type: 'string', required: true, description: 'First driver code (e.g. VER)' },
+    { name: 'driver2', type: 'string', required: true, description: 'Second driver code (e.g. HAM)' },
+  ]}
+/>
+
+```bash
+curl "https://api.t1f1.com/api/v1/throttleBrake-comparison-2drivers-data?year=2025&gp=1&session=Q&driver1=VER&driver2=LEC" \
+  -H "X-API-Key: YOUR_KEY"
+```

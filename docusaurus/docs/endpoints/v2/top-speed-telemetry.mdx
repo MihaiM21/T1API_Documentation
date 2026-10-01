@@ -1,0 +1,41 @@
+---
+id: top-speed-telemetry
+title: V2 — Top Speed Telemetry
+sidebar_label: Top Speed Telemetry
+---
+
+# Top Speed Telemetry
+
+Peak speed derived directly from telemetry channel 0 of the CarData stream.
+
+<EndpointCard method="GET" path="/api/v2/top-speed-telemetry-plot" description="PNG bar chart of top speeds from telemetry." />
+<EndpointCard method="GET" path="/api/v2/top-speed-telemetry-data" description="JSON top speed data from telemetry stream." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer | string', required: true, description: 'Round number, event key, or official name (case-insensitive partial match)' },
+    { name: 'session', type: 'string', required: true, description: 'Session type: Q, R, Practice, Qualifying, Sprint, etc.' },
+  ]}
+/>
+
+```bash
+curl "https://api.t1f1.com/api/v2/top-speed-telemetry-data?year=2025&gp=Bahrain&session=Q" \
+  -H "X-API-Key: YOUR_KEY"
+```
+
+```json title="response"
+{
+  "drivers": [
+    {
+      "driver_code": "VER",
+      "driver_name": "Max Verstappen",
+      "top_speed": 326.4,
+      "lap_number": 15,
+      "session": "Q"
+    }
+  ]
+}
+```

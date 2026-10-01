@@ -1,0 +1,43 @@
+.callout {
+  border: 1px solid;
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin: 1rem 0 1.5rem;
+  font-size: 0.85rem;
+}
+.title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.4rem;
+  opacity: 0.75;
+}
+.body {
+  line-height: 1.6;
+  color: #d4d4d4;
+}
+.body :global(p:last-child) {
+  margin-bottom: 0;
+}
+.info {
+  border-color: rgba(59, 130, 246, 0.3);
+  background: rgba(59, 130, 246, 0.05);
+  color: #bfdbfe;
+}
+.warning {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.05);
+  color: #fde68a;
+}
+.tip {
+  border-color: rgba(239, 57, 70, 0.3);
+  background: rgba(239, 57, 70, 0.05);
+  color: #fecaca;
+}
+.danger {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.06);
+  color: #fecaca;
+}

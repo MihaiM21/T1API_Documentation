@@ -1,0 +1,45 @@
+---
+id: qualifying
+title: V1 — Qualifying Results
+sidebar_label: Qualifying Results
+---
+
+# Qualifying Results
+
+Qualifying session results including best lap times, tyre compounds, and session segments (Q1/Q2/Q3).
+
+<EndpointCard method="GET" path="/api/v1/qualifying-results-plot" description="PNG qualifying results chart." />
+<EndpointCard method="GET" path="/api/v1/qualifying-results-data" description="JSON structured qualifying results." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer', required: true, description: 'Grand Prix round number (1–24)' },
+    { name: 'session', type: 'string', required: true, description: 'Use Q for qualifying' },
+  ]}
+/>
+
+```json title="response"
+{
+  "session": {
+    "year": 2025,
+    "round": 1,
+    "event_name": "Bahrain Grand Prix",
+    "session_type": "Qualifying"
+  },
+  "results": [
+    {
+      "position": 1,
+      "driver_code": "VER",
+      "driver_name": "Max Verstappen",
+      "team": "Red Bull Racing",
+      "q1_time": "1:31.234",
+      "q2_time": "1:30.876",
+      "q3_time": "1:30.445",
+      "tyre_compound": "SOFT"
+    }
+  ]
+}
+```

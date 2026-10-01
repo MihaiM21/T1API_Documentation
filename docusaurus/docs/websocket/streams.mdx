@@ -1,0 +1,54 @@
+---
+id: streams
+title: V2 Live Streams
+sidebar_label: V2 Live Streams
+---
+
+# V2 Live Streams
+
+The V2 pipeline parses three live data streams simultaneously to build its responses:
+
+<DataTable
+  headers={['Stream', 'Content', 'Update Frequency']}
+  rows={[
+    ['CarData.z.jsonStream', 'Speed, RPM, gear, throttle, brake per car', '~3.7 Hz (every 270 ms)'],
+    ['PositionData.z.jsonStream', 'X/Y/Z coordinates per car', '~3.7 Hz (every 270 ms)'],
+    ['TimingData.json', 'Lap times, sector times, gaps, pit status', '~200 ms during session'],
+  ]}
+/>
+
+<Callout variant="info">
+The `gp` parameter on V2 endpoints supports case-insensitive partial name matching, so `gp=Bahrain` will match `Bahrain Grand Prix`. During a live session use the round number for reliability.
+</Callout>
+
+## Live load endpoint
+
+The `/api/monitoring/load` endpoint provides a snapshot of the API's current state — active request count, error rate, and system resource utilization. Poll this at a low frequency (e.g. every 60 seconds) to build a lightweight health indicator for your application.
+
+```bash
+curl "https://api.t1f1.com/api/monitoring/load" -H "X-API-Key: YOUR_KEY"
+```
+
+```json title="response"
+{
+  "timestamp": "2025-04-04T12:34:56.789Z",
+  "active_requests": 12,
+  "system": { "cpu_percent": 28.3, "memory_percent": 42.1, "memory_mb": 6912 },
+  "requests": { "total": 50000, "total_errors": 230, "error_rate_percent": 0.46 },
+  "uptime": "15 days, 3:42:18"
+}
+```
+
+## Caching behaviour
+
+T1API uses a two-layer cache:
+
+<DataTable
+  headers={['Layer', 'Storage', 'TTL', 'Scope']}
+  rows={[
+    ['Response cache', 'MongoDB', '3,600 s (1 hour)', 'Per session + endpoint combination'],
+    ['FastF1 local cache', 'Disk (Docker volume)', 'Permanent', 'V1 pipeline only — raw F1 data files'],
+  ]}
+/>
+
+Cache invalidation is triggered automatically when a session state change is detected (e.g. a lap is completed, or the session status moves from active to finished). You do not need to pass any cache-busting parameters.

@@ -1,0 +1,54 @@
+---
+id: top-speed
+title: V1 — Top Speed
+sidebar_label: Top Speed
+---
+
+# Top Speed
+
+Returns the highest recorded speed for each driver during the specified session, sourced from the FastF1 cached timing data.
+
+<EndpointCard method="GET" path="/api/v1/top-speed-plot" description="PNG plot ranking all drivers by top speed." />
+<EndpointCard method="GET" path="/api/v1/top-speed-data" description="JSON array of top speed records per driver." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer', required: true, description: 'Grand Prix round number (1–24)' },
+    { name: 'session', type: 'string', required: true, description: 'Session type: Q, R, FP1, FP2, FP3, S, SQ' },
+  ]}
+/>
+
+## Example
+
+```bash
+curl "https://api.t1f1.com/api/v1/top-speed-data?year=2025&gp=1&session=Q" \
+  -H "X-API-Key: YOUR_KEY"
+```
+
+```json title="response"
+{
+  "drivers": [
+    {
+      "driver_code": "VER",
+      "driver_name": "Max Verstappen",
+      "top_speed": 355.0,
+      "lap_number": 12,
+      "session": "Q"
+    },
+    {
+      "driver_code": "HAM",
+      "driver_name": "Lewis Hamilton",
+      "top_speed": 352.5,
+      "lap_number": 8,
+      "session": "Q"
+    }
+  ]
+}
+```
+
+<Callout variant="tip">
+Try this endpoint live in the [Playground](/playground).
+</Callout>

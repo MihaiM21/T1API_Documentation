@@ -1,0 +1,29 @@
+---
+id: errors
+title: Error Responses
+sidebar_label: Error Responses
+---
+
+# Error Responses
+
+All error responses use the same envelope. The `request_id` field is present on every response — include it when contacting support.
+
+```json title="error envelope"
+{
+  "detail": "Invalid parameters: session must be one of Q, R, FP1, FP2, FP3, S, SQ",
+  "request_id": "550e8400-e29b-41d4-a716-446655440000",
+  "timestamp": "2025-04-04T12:34:56.789Z"
+}
+```
+
+<DataTable
+  headers={['Field', 'Type', 'Description']}
+  rows={[
+    ['detail', 'string', 'Human-readable error description'],
+    ['request_id', 'UUID string', 'Unique ID for this request — use when reporting issues'],
+    ['timestamp', 'ISO 8601 string', 'Server timestamp when the error occurred'],
+    ['error_code', 'string (optional)', 'Machine-readable code for programmatic handling'],
+  ]}
+/>
+
+See the full list of HTTP status codes in [Errors & Status Codes](../getting-started/errors).

@@ -1,0 +1,22 @@
+---
+id: throttle
+title: V2 — Throttle Comparison
+sidebar_label: Throttle Comparison
+---
+
+# Throttle Comparison
+
+Throttle application patterns sourced from telemetry channel 4 (throttle, 0–100%) of the V2 CarData stream.
+
+<EndpointCard method="GET" path="/api/v2/throttle-comparison-plot" description="PNG throttle comparison from V2 telemetry." />
+<EndpointCard method="GET" path="/api/v2/throttle-comparison-data" description="JSON throttle data from V2 telemetry." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer | string', required: true, description: 'Round number, event key, or official name' },
+    { name: 'session', type: 'string', required: true, description: 'Session type' },
+  ]}
+/>

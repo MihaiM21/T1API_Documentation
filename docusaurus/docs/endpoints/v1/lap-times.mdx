@@ -1,0 +1,38 @@
+---
+id: lap-times
+title: V1 — Lap Times
+sidebar_label: Lap Times
+---
+
+# Lap Times
+
+Single-driver lap-by-lap timing data for the specified session.
+
+<EndpointCard method="GET" path="/api/v1/laptimes" description="JSON array of lap times for a single driver." />
+
+## Parameters
+
+<ParamTable
+  params={[
+    { name: 'year', type: 'integer', required: true, description: 'Race season year (2018–2030)' },
+    { name: 'gp', type: 'integer', required: true, description: 'Grand Prix round number (1–24)' },
+    { name: 'session', type: 'string', required: true, description: 'Session type: Q, R, FP1, FP2, FP3, S, SQ' },
+    { name: 'driver', type: 'string', required: true, description: '3-letter uppercase driver code (e.g. VER, HAM, LEC)' },
+  ]}
+/>
+
+```bash
+curl "https://api.t1f1.com/api/v1/laptimes?year=2025&gp=1&session=R&driver=VER" \
+  -H "X-API-Key: YOUR_KEY"
+```
+
+```json title="response"
+{
+  "driver": "VER",
+  "session": "R",
+  "laps": [
+    { "lap_number": 1, "lap_time": "1:34.211", "tyre": "MEDIUM", "is_pit_out": true },
+    { "lap_number": 2, "lap_time": "1:32.455", "tyre": "MEDIUM", "is_pit_out": false }
+  ]
+}
+```

@@ -1,0 +1,111 @@
+---
+id: polling
+title: Polling Strategy
+sidebar_label: Polling Strategy
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Polling Strategy
+
+To display live data in your application, poll the relevant V2 endpoints on a timed interval. The recommended interval is **5–15 seconds** for most use cases. Polling faster than your rate limit allows will result in `429 Too Many Requests` responses.
+
+## Recommended endpoints
+
+```text
+# Live driver rankings
+GET /api/v2/top-speed-telemetry-data?year=2025&gp=1&session=Q
+
+# Session-wide telemetry
+GET /api/v2/speed-distribution-data?year=2025&gp=1&session=Q
+GET /api/v2/throttle-comparison-data?year=2025&gp=1&session=Q
+```
+
+## Polling example
+
+<Tabs groupId="lang">
+  <TabItem value="js" label="JavaScript" default>
+
+```javascript
+const API_KEY = process.env.T1_API_KEY;
+const BASE = "https://api.t1f1.com";
+let timer = null;
+
+async function fetchLiveTiming(year, gp, session) {
+  const res = await fetch(
+    `${BASE}/api/v2/top-speed-telemetry-data?year=${year}&gp=${gp}&session=${session}`,
+    { headers: { "X-API-Key": API_KEY } }
+  );
+
+  if (res.status === 429) {
+    const reset = res.headers.get("X-RateLimit-Reset");
+    const delay = reset ? (parseInt(reset) * 1000 - Date.now()) : 15000;
+    clearInterval(timer);
+    setTimeout(() => startPolling(year, gp, session), delay);
+    return;
+  }
+  const data = await res.json();
+  renderDriverTable(data.drivers);
+}
+
+function startPolling(year, gp, session) {
+  fetchLiveTiming(year, gp, session);
+  timer = setInterval(() => fetchLiveTiming(year, gp, session), 10000);
+}
+
+startPolling(2025, 1, "Q");
+```
+
+  </TabItem>
+  <TabItem value="py" label="Python">
+
+```python
+import time, requests
+
+API_KEY = "YOUR_API_KEY"
+BASE = "https://api.t1f1.com"
+
+def fetch(year, gp, session):
+    r = requests.get(
+        f"{BASE}/api/v2/top-speed-telemetry-data",
+        params={"year": year, "gp": gp, "session": session},
+        headers={"X-API-Key": API_KEY},
+    )
+    if r.status_code == 429:
+        reset = int(r.headers.get("X-RateLimit-Reset", 0))
+        time.sleep(max(reset - time.time(), 15))
+        return {}
+    r.raise_for_status()
+    return r.json()
+
+def poll(year, gp, session, interval=10):
+    while True:
+        data = fetch(year, gp, session)
+        for d in data.get("drivers", []):
+            print(f"{d['driver_code']}: {d['top_speed']} km/h")
+        time.sleep(interval)
+
+poll(2025, 1, "Q")
+```
+
+  </TabItem>
+</Tabs>
+
+## Rate limit guidance
+
+Data endpoints (paths ending in `-data`) have their own shared counter of 60 req/min across all tiers. Plan your polling intervals accordingly:
+
+<DataTable
+  headers={['Interval', 'Req/min (1 endpoint)', 'Tier Required', 'Headroom']}
+  rows={[
+    ['2 seconds', '30', 'Standard (60/min data)', '50%'],
+    ['5 seconds', '12', 'Standard', '80%'],
+    ['10 seconds', '6', 'Standard', '90%'],
+    ['30 seconds', '2', 'Public (30/min total)', '~93%'],
+  ]}
+/>
+
+<Callout variant="warning">
+Always check `X-RateLimit-Remaining` on each response. When it reaches 0, stop polling until after `X-RateLimit-Reset` (Unix epoch).
+</Callout>
